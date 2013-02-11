@@ -2,7 +2,7 @@ package fail;
 
 import java.lang.System;
 
-public class Division
+public class Modulo
 {
     public static void main(String[] args)
     {
