@@ -274,8 +274,8 @@ class JDivideOp extends JBinaryExpression
 	{
 		super(line, "/", lhs, rhs);
 	}
-	// TODO
-	public JExpression analyze(Context context)
+	
+    public JExpression analyze(Context context)
 	{
 		lhs = (JExpression) lhs.analyze(context);
 		rhs = (JExpression) rhs.analyze(context);
@@ -284,11 +284,49 @@ class JDivideOp extends JBinaryExpression
 		type = Type.INT;
 		return this;
 	}
-	// TODO
+
 	public void codegen(CLEmitter output)
 	{
 		lhs.codegen(output);
 		rhs.codegen(output);
 		output.addNoArgInstruction(IDIV);
+	}
+}
+
+/**
+ * The AST node for a modulo (%) expression.
+ */
+class JModuloOp extends JBinaryExpression
+{
+	/**
+	 * Construct an AST node for a modulo expression
+	 * given its line number, and the lhs and rhs operands.
+	 *
+	 * @param line line in which the modulo expression
+	 * occurs in the source file.
+	 * @param lhs lhs operand.
+	 * @param rhs rhs operand.
+	 */
+	public JModuloOp(int line, JExpression lhs,
+			JExpression rhs)
+	{
+		super(line, "%", lhs, rhs);
+	}
+	
+    public JExpression analyze(Context context)
+	{
+		lhs = (JExpression) lhs.analyze(context);
+		rhs = (JExpression) rhs.analyze(context);
+		lhs.type().mustMatchExpected(line(), Type.INT);
+		rhs.type().mustMatchExpected(line(), Type.INT);
+		type = Type.INT;
+		return this;
+	}
+
+	public void codegen(CLEmitter output)
+	{
+		lhs.codegen(output);
+		rhs.codegen(output);
+		output.addNoArgInstruction(IREM);
 	}
 }

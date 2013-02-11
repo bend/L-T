@@ -1132,6 +1132,9 @@ public class Parser {
             } else if (have(DIV)) {
             	lhs = new JDivideOp(line, lhs,
             			unaryExpression());
+            } else if (have(MOD)) {
+            	lhs = new JModuloOp(line, lhs,
+            			unaryExpression());
             } else {
                 more = false;
             }
@@ -1157,6 +1160,8 @@ public class Parser {
             return new JPreIncrementOp(line, unaryExpression());
         } else if (have(MINUS)) {
             return new JNegateOp(line, unaryExpression());
+        } else if (have(PLUS)) {
+            return new JUnaryPlusOp(line, unaryExpression());
         } else {
             return simpleUnaryExpression();
         }
