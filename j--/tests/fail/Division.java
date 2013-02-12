@@ -8,5 +8,6 @@ public class Division
     {
         System.out.println('a' / 42);
         System.out.println(42 / 'a');
+        System.out.println(42 / 0);
     }
 }
