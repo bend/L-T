@@ -108,6 +108,10 @@ public class Primes {
 
 
     public static void main(String[] args) {
+        if (args.length() == 0) {
+            System.out.println("Missing argument");
+            return;
+        }
         int i = Primes.toInt(args[0]);
         Primes primes = new Primes(i);
         primes.erastosthene(); 
