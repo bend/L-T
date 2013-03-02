@@ -135,9 +135,7 @@ class Scanner {
                 } else {
                     return new TokenInfo(MOD, line);
                 }
-            } else {
-                moreWhiteSpace = false;
-            }
+            } 
         }
         line = input.line();
         switch (ch) {
