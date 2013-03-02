@@ -105,6 +105,17 @@ class Scanner {
                     while (ch != '\n' && ch != EOFCH) {
                         nextCh();
                     }
+                } else if (ch == '*') {
+                    nextCh();
+                    boolean commentOn = true;
+                    while( ch != EOFCH && commentOn) {
+                        if( ch == '*') {
+                            nextCh();
+                            if( ch != EOFCH &&  ch == '/') {
+                                commentOn = false;
+                            }
+                        }
+                    }
                 } else {
                     return new TokenInfo(DIV, line);
                 }
@@ -216,6 +227,7 @@ class Scanner {
             } else {
                 buffer.append(ch);
                 nextCh();
+
             }
             if (ch == '\'') {
                 buffer.append('\'');
