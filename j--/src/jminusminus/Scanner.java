@@ -115,8 +115,10 @@ class Scanner {
                             nextCh();
                             if( ch == '/') {
                                 commentOn = false;
+                                nextCh();
                             }
                         }
+                        else System.out.println("Skipping "+ ch);
                     }
                 } else {
                     return new TokenInfo(DIV, line);
