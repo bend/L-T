@@ -106,12 +106,14 @@ class Scanner {
                         nextCh();
                     }
                 } else if (ch == '*') {
+                    // Skip multilines comments
                     nextCh();
                     boolean commentOn = true;
                     while( ch != EOFCH && commentOn) {
+                        nextCh();
                         if( ch == '*') {
                             nextCh();
-                            if( ch != EOFCH &&  ch == '/') {
+                            if( ch == '/') {
                                 commentOn = false;
                             }
                         }
