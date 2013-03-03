@@ -13,8 +13,7 @@ public class MultiLinesComments {
          * //// ****
          * lines
          */
-        System.out.println(/*This is a comment inside a function call */ "MultiLinesComments OK");
-        //System.out.println("OK");
+        System.out.println("OK");
     }
 
 }
