@@ -986,7 +986,7 @@ public class Parser {
      * 
      * <pre>
      *   assignmentExpression ::= 
-     *       conditionalAndExpression // level 13
+     *       conditionalExpression // level 13
      *           [( ASSIGN  // conditionalExpression
      *            | PLUS_ASSIGN // must be valid lhs
      *            )
@@ -998,7 +998,7 @@ public class Parser {
 
     private JExpression assignmentExpression() {
         int line = scanner.token().line();
-        JExpression lhs = conditionalAndExpression();
+        JExpression lhs = conditionalExpression();
         if (have(ASSIGN)) {
             return new JAssignOp(line, lhs, assignmentExpression());
         } else if (have(PLUS_ASSIGN)) {
@@ -1006,6 +1006,29 @@ public class Parser {
         } else {
             return lhs;
         }
+    }
+    
+    /**
+     * Parse a conditional expression.
+     * 
+     * <pre>
+     *   conditionalExpression ::= conditionalAndExpression  // level 12
+     *                              [? assignmentExpression : conditionalExpression]
+     * </pre>
+     * 
+     * @return an AST for a conditionalExpression.
+     */
+
+    private JExpression conditionalExpression() {
+        int line = scanner.token().line();
+        boolean more = true;
+        JExpression lhs =  conditionalAndExpression();
+        if (have(QUEST)) {
+            lhs = new JLogicalAndOp(line, lhs, equalityExpression());
+        } else {
+            more = false;
+        }
+        return lhs;
     }
 
     /**
