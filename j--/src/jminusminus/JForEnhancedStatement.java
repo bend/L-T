@@ -43,7 +43,7 @@ class JForEnhancedStatement extends JStatement {
 	 *            the body.
 	 */
 
-	public JForEnhancedStatement(int line, JStatement init, JExpression condition, JStatement body) {
+	public JForEnhancedStatement(int line, JStatement init, JExpression condition, ArrayList<JStatement> body) {
 		super(line);
 		//this.identifier = init;
 		//this.expression = condition;

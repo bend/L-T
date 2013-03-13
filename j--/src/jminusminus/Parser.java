@@ -657,7 +657,7 @@ public class Parser {
             return new JWhileStatement(line, test, statement);
         } else if (have(FOR)) {
             mustBe(LPAREN);
-            JStatement init;
+            JStatement init = null;
             JStatement incr = null;
             boolean haveDdot = false;
             if( see(FINAL) || see(INT) || see(CHAR)|| see(BOOLEAN) || see(IDENTIFIER)){
@@ -681,22 +681,24 @@ public class Parser {
                 mustBe(SEMI);
                 incr = statementExpressions();
             }
+            /* Closing paren */
             mustBe(RPAREN);
-
-            ArrayList<JStatement> statements = new ArrayList<JStatement>();
+            
+            /* loop body */
+            ArrayList<JStatement> forBody = new ArrayList<JStatement>();
             JStatement statement = statement();
             System.out.println("############################### adding statement" + statement);
-            statements.add(statement);
-            JStatement testFor;
+            forBody.add(statement);
+            JStatement cfor;
             if(!haveDdot){
-                testFor =  new JForStatement(line,init,condition,incr,statements);
+                cfor =  new JForStatement(line,init,condition,incr,forBody);
             } else {
                 System.out.println("Enhanced for");
                 init.writeToStdOut(new PrettyPrinter());
-                testFor =  new JForEnhancedStatement(line,init,condition,statement);
+                cfor =  new JForEnhancedStatement(line,init,condition,forBody);
             }
-            testFor.writeToStdOut(new PrettyPrinter());
-            return testFor;
+            cfor.writeToStdOut(new PrettyPrinter());
+            return cfor;
         } else if (have(RETURN)) {
             if (have(SEMI)) {
                 return new JReturnStatement(line, null);
