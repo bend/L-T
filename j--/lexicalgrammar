@@ -32,6 +32,8 @@ THIS        ::= "this"
 TRUE        ::= "true"
 VOID        ::= "void"
 WHILE       ::= "while"
+FOR         ::= "for"
+FINAL       ::= "final"
 
 // Operators
 ASSIGN      ::= "="
@@ -47,6 +49,8 @@ PLUS_ASSIGN ::= "+="
 STAR        ::= "*"
 DIV         ::= "/"
 MOD         ::= "%" 
+QUEST       ::= "?"
+DDOT        ::= ":"
 
 // Separators
 COMMA       ::= ","

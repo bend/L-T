@@ -189,6 +189,7 @@ TOKEN:
 | < MINUS: "-" >
 | < PLUS_ASSIGN: "+=" >
 | < STAR: "*" >
+| < QUEST: "?" >
 }
 
 // Separators (these could be combined with the reserved words)
@@ -203,6 +204,7 @@ TOKEN:
 | < SEMI: ";" >
 | < COMMA: "," >
 | < DOT: "." >
+| < DDOT: ":">
 }
 
 // Identifiers

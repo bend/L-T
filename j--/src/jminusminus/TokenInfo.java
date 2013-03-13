@@ -16,13 +16,13 @@ enum TokenKind {
             "import"), INSTANCEOF("instanceof"), INT("int"), NEW("new"), NULL(
             "null"), PACKAGE("package"), PRIVATE("private"), PROTECTED(
             "protected"), PUBLIC("public"), RETURN("return"), STATIC("static"), SUPER(
-            "super"), THIS("this"), TRUE("true"), VOID("void"), WHILE("while"), PLUS(
-            "+"), ASSIGN("="), QUEST("?"), DEC("--"), EQUAL("=="), GT(">"), INC("++"), LAND(
+            "super"), THIS("this"), TRUE("true"), VOID("void"), WHILE("while"), FOR("for"), PLUS(
+            "+"), ASSIGN("="), QUEST("?"), DDOT(":"), DEC("--"), EQUAL("=="), GT(">"), INC("++"), LAND(
             "&&"), LE("<="), LNOT("!"), MINUS("-"), PLUS_ASSIGN("+="), STAR("*"), DIV("/"), MOD("%"), LPAREN(
             "("), RPAREN(")"), LCURLY("{"), RCURLY("}"), LBRACK("["), RBRACK(
             "]"), SEMI(";"), COMMA(","), DOT("."), IDENTIFIER("<IDENTIFIER>"), INT_LITERAL(
             "<INT_LITERAL>"), CHAR_LITERAL("<CHAR_LITERAL>"), STRING_LITERAL(
-            "<STRING_LITERAL>");
+            "<STRING_LITERAL>"), FINAL("final");
 
     /** The token's string representation. */
     private String image;

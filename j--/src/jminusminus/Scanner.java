@@ -80,6 +80,8 @@ class Scanner {
         reserved.put(TRUE.image(), TRUE);
         reserved.put(VOID.image(), VOID);
         reserved.put(WHILE.image(), WHILE);
+        reserved.put(FOR.image(), FOR);
+        reserved.put(FINAL.image(), FINAL);
 
         // Prime the pump.
         nextCh();
@@ -271,6 +273,12 @@ class Scanner {
         case '.':
             nextCh();
             return new TokenInfo(DOT, line);
+        case '?':
+            nextCh();
+            return new TokenInfo(QUEST, line);
+        case ':':
+            nextCh();
+            return new TokenInfo(DDOT, line);
         case EOFCH:
             return new TokenInfo(EOF, line);
         case '0':

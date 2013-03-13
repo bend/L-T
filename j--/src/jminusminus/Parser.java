@@ -633,6 +633,7 @@ public class Parser {
      *   statement ::= block
      *               | IF parExpression statement [ELSE statement]
      *               | WHILE parExpression statement 
+     *               | FOR ( [forInit] ; [expression] ; [forUpdate] ) statement
      *               | RETURN [expression] SEMI
      *               | SEMI 
      *               | statementExpression SEMI
@@ -654,6 +655,48 @@ public class Parser {
             JExpression test = parExpression();
             JStatement statement = statement();
             return new JWhileStatement(line, test, statement);
+        } else if (have(FOR)) {
+            mustBe(LPAREN);
+            JStatement init;
+            JStatement incr = null;
+            boolean haveDdot = false;
+            if( see(FINAL) || see(INT) || see(CHAR)|| see(BOOLEAN) || see(IDENTIFIER)){
+                init =  localVariableDeclarationStatement();
+                // If expression contains : then it's a FOR on array
+                if (see(DDOT)){
+                    mustBe(DDOT);
+                    haveDdot = true;
+                    System.out.println("###############################have ddot");
+                }
+            } else {
+                // Empty declaration
+                System.out.println("###############################Empty decl");
+                init = statementExpressions();
+                mustBe(SEMI);
+            }
+
+            JExpression condition = expression();
+
+            if(!haveDdot){
+                mustBe(SEMI);
+                incr = statementExpressions();
+            }
+            mustBe(RPAREN);
+
+            ArrayList<JStatement> statements = new ArrayList<JStatement>();
+            JStatement statement = statement();
+            System.out.println("############################### adding statement" + statement);
+            statements.add(statement);
+            JStatement testFor;
+            if(!haveDdot){
+                testFor =  new JForStatement(line,init,condition,incr,statements);
+            } else {
+                System.out.println("Enhanced for");
+                init.writeToStdOut(new PrettyPrinter());
+                testFor =  new JForEnhancedStatement(line,init,condition,statement);
+            }
+            testFor.writeToStdOut(new PrettyPrinter());
+            return testFor;
         } else if (have(RETURN)) {
             if (have(SEMI)) {
                 return new JReturnStatement(line, null);
@@ -746,6 +789,10 @@ public class Parser {
     private JVariableDeclaration localVariableDeclarationStatement() {
         int line = scanner.token().line();
         ArrayList<String> mods = new ArrayList<String>();
+        if(have(FINAL)){
+            mods.add("final");
+        }
+
         ArrayList<JVariableDeclarator> vdecls = variableDeclarators(type());
         mustBe(SEMI);
         return new JVariableDeclaration(line, mods, vdecls);
@@ -967,6 +1014,27 @@ public class Parser {
         return new JStatementExpression(line, expr);
     }
 
+    /**  
+     * Parse statements.
+     * 
+     * <pre>
+     *   statementExpressions ::= statementExpression {, statementExpression}
+     * </pre>
+     * 
+     * @return a list of statementExpression.
+     */
+
+    private JStatementExpressions statementExpressions() {
+        int line = scanner.token().line();
+        ArrayList<JStatement> args = new ArrayList<JStatement>();
+        do {
+            args.add(statementExpression());
+            System.out.println("statment expr added");
+        } while (have(COMMA));
+        return new JStatementExpressions(line,args);
+    }    
+
+
     /**
      * An expression.
      * 
@@ -1021,12 +1089,11 @@ public class Parser {
 
     private JExpression conditionalExpression() {
         int line = scanner.token().line();
-        boolean more = true;
         JExpression lhs =  conditionalAndExpression();
         if (have(QUEST)) {
-            lhs = new JLogicalAndOp(line, lhs, equalityExpression());
-        } else {
-            more = false;
+            JExpression vTrue = assignmentExpression();
+            mustBe(DDOT);
+            lhs = new JTernaryOp(line, lhs, vTrue, conditionalExpression());
         }
         return lhs;
     }
@@ -1288,7 +1355,7 @@ public class Parser {
      *                     | DOT IDENTIFIER [arguments] 
      *                     )
      *             | literal
-     *             | NEW creator
+     , JExpression mhs*             | NEW creator
      *             | qualifiedIdentifier [arguments]
      * </pre>
      * 

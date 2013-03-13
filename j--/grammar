@@ -9,7 +9,7 @@ qualifiedIdentifier ::= IDENTIFIER {DOT IDENTIFIER}
 
 typeDeclaration ::= modifiers classDeclaration
 
-modifiers ::= {PUBLIC | PROTECTED | PRIVATE | STATIC | ABSTRACT}
+modifiers ::= {PUBLIC | PROTECTED | PRIVATE | STATIC | ABSTRACT |  FINAL}
 
 classDeclaration ::= CLASS IDENTIFIER 
                        [EXTENDS qualifiedIdentifier] 
@@ -32,6 +32,7 @@ blockStatement ::= localVariableDeclarationStatement
 statement ::= block
             | IF parExpression statement [ELSE statement]
             | WHILE parExpression statement 
+            | FOR ( [forInit];[expression];[forUpdate]) statement
             | RETURN [expression] SEMI
             | SEMI 
             | statementExpression SEMI
@@ -40,9 +41,15 @@ formalParameters ::= LPAREN
                        [formalParameter {COMMA formalParameter}]
                      RPAREN
 
+forUpdate ::= statementExpression {, statementExpression}
+
 formalParameter ::= type IDENTIFIER
 
 parExpression ::= LPAREN expression RPAREN
+
+forInit ::= statementExpression {, statementExpression}
+        | [FINAL] type variableDeclarators
+
 
 localVariableDeclarationStatement ::= type variableDeclarators SEMI
 
@@ -69,8 +76,11 @@ statementExpression ::= expression // but must have side-effect, eg i++
 
 expression ::= assignmentExpression
 
-assignmentExpression ::= conditionalAndExpression  // must be a valid lhs
+assignmentExpression ::= conditionalExpression  // must be a valid lhs
                            [(ASSIGN | PLUS_ASSIGN) assignmentExpression]
+
+conditionalExpression ::= conditionalAndExpression
+                [QUEST assignmentExpression DDOT conditionalExpression] // level 12
 
 conditionalAndExpression ::= equalityExpression // level 10
                                {LAND equalityExpression}
