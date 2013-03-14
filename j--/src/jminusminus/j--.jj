@@ -1149,7 +1149,7 @@ private JExpression assignmentExpression(): {
 }
 {
     try {
-        lhs = conditionalAndExpression() { line = lhs.line(); }
+        lhs = conditionalExpression() { line = lhs.line(); }
         [       
             <ASSIGN> 
             rhs = assignmentExpression()
@@ -1164,6 +1164,39 @@ private JExpression assignmentExpression(): {
     }
     { return lhs; }
 }
+
+/**
+ * Parse a conditional expression.
+ * 
+ * <pre>
+ *   conditionalExpression ::= conditionalAndExpression  // level 12
+ *                              [? assignmentExpression : conditionalExpression]
+ * </pre>
+ * 
+ * @return an AST for a conditionalExpression.
+ */
+
+private JExpression conditionalExpression(): {
+    int line = 0;
+    JExpression lhs = null, vTrue = null, rhs = null;
+}
+{
+    try {
+        lhs = conditionalAndExpression() { line = lhs.line(); }
+        [
+            <QUEST>
+            vTrue = assignmentExpression()
+            <DDOT>
+            { lhs = new JTernaryOp( line, lhs, vTrue, conditionalExpression() ); }
+        ]
+    } 
+    catch ( ParseException e ) { 
+        recoverFromError( new int[] { SEMI, EOF }, e ); 
+    }
+    { return lhs; }
+}
+
+
 
 /**
  * Parse a conditional-and expression.
