@@ -28,7 +28,7 @@ class JForEnhancedStatement extends JStatement {
 	private JStatement incr;
 
 	/** The body. */
-	private JStatement body;
+	private ArrayList<JStatement> body;
 
 
 	/**
@@ -45,9 +45,9 @@ class JForEnhancedStatement extends JStatement {
 
 	public JForEnhancedStatement(int line, JStatement init, JExpression condition, ArrayList<JStatement> body) {
 		super(line);
-		//this.identifier = init;
-		//this.expression = condition;
-		//this.body = body;
+		this.identifier = init;
+		this.expression = condition;
+		this.body = body;
 
 
 		// Gestion du FOR Normal
@@ -82,7 +82,7 @@ class JForEnhancedStatement extends JStatement {
 
 		this.init = initFor;
 		this.condition = condFor;
-		//this.body = ourBody;
+		this.body = ourBody;
 
 
 
@@ -121,22 +121,23 @@ class JForEnhancedStatement extends JStatement {
 	 */
 
 	public void writeToStdOut(PrettyPrinter p) {
-		//		p.printf("<JForEnhancedStatement line=\"%d\">\n", line());
-		//		p.indentRight();$
-		//		p.printf("<InitializeExpression>\n");
-		//		p.indentRight();
-		//		identifier.writeToStdOut(p);
-		//		p.indentLeft();
-		//		p.printf("</InitializeExpression>\n");
-        /*
-				p.printf("<Body>\n");
-				p.indentRight();
-				body.writeToStdOut(p);
-				p.indentLeft();
-				p.printf("</Body>\n");
-                */
-		//		p.indentLeft();
-		//		p.printf("</JForEnhancedStatement>\n");
+			p.printf("<JForEnhancedStatement line=\"%d\">\n", line());
+			p.indentRight();
+			p.printf("<InitializeExpression>\n");
+			p.indentRight();
+			p.indentLeft();
+			p.printf("</InitializeExpression>\n");
+            p.printf("<Body>\n");
+            p.indentRight();
+            for (JStatement statement : body) {
+                p.indentRight();
+                statement.writeToStdOut(p);
+                p.indentLeft();
+            }
+            p.indentLeft();
+            p.printf("</Body>\n");
+            p.indentLeft();
+            p.printf("</JForEnhancedStatement>\n");
 
 	}
 

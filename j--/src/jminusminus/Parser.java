@@ -661,15 +661,14 @@ public class Parser {
             JStatement incr = null;
             boolean haveDdot = false;
             if( see(FINAL) || see(INT) || see(CHAR)|| see(BOOLEAN) || see(IDENTIFIER)){
-                init =  localVariableDeclarationStatement();
+                init =  localVariableDeclarationStatement2();
                 // If expression contains : then it's a FOR on array
                 if (see(DDOT)){
                     mustBe(DDOT);
                     haveDdot = true;
-                    System.out.println("###############################have ddot");
-                }
+                } else
+                    mustBe(SEMI);
             } else {
-                System.out.println("###############################Empty decl");
                 init = statementExpressions();
                 mustBe(SEMI);
             }
@@ -686,7 +685,6 @@ public class Parser {
             /* loop body */
             ArrayList<JStatement> forBody = new ArrayList<JStatement>();
             JStatement statement = statement();
-            System.out.println("############################### adding statement" + statement);
             forBody.add(statement);
             JStatement cfor;
             if(!haveDdot){
@@ -796,6 +794,17 @@ public class Parser {
 
         ArrayList<JVariableDeclarator> vdecls = variableDeclarators(type());
         mustBe(SEMI);
+        return new JVariableDeclaration(line, mods, vdecls);
+    }
+    
+    private JVariableDeclaration localVariableDeclarationStatement2() {
+        int line = scanner.token().line();
+        ArrayList<String> mods = new ArrayList<String>();
+        if(have(FINAL)){
+            mods.add("final");
+        }
+
+        ArrayList<JVariableDeclarator> vdecls = variableDeclarators(type());
         return new JVariableDeclaration(line, mods, vdecls);
     }
 

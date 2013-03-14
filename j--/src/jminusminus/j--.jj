@@ -644,6 +644,7 @@ private JStatement blockStatement(): {
  *   statement ::= block
  *               | IF parExpression statement [ELSE statement]
  *               | WHILE parExpression statement 
+ *               | FOR ( [forInit] ; [expression] ; [forUpdate] ) statement
  *               | RETURN [expression] SEMI
  *               | SEMI 
  *               | statementExpression SEMI
