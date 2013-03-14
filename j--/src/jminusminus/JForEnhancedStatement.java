@@ -28,7 +28,7 @@ class JForEnhancedStatement extends JStatement {
 	private JStatement incr;
 
 	/** The body. */
-	private ArrayList<JStatement> body;
+	private JStatement body;
 
 
 	/**
@@ -45,9 +45,8 @@ class JForEnhancedStatement extends JStatement {
 
 	public JForEnhancedStatement(int line, JStatement init, JExpression condition, ArrayList<JStatement> body) {
 		super(line);
-		this.identifier = init;
-		this.expression = condition;
-		this.body = body;
+		this.init = init;
+		this.condition = condition;
 
 
 		// Gestion du FOR Normal
@@ -129,11 +128,9 @@ class JForEnhancedStatement extends JStatement {
 			p.printf("</InitializeExpression>\n");
             p.printf("<Body>\n");
             p.indentRight();
-            for (JStatement statement : body) {
-                p.indentRight();
-                statement.writeToStdOut(p);
-                p.indentLeft();
-            }
+            p.indentRight();
+            body.writeToStdOut(p);
+            p.indentLeft();
             p.indentLeft();
             p.printf("</Body>\n");
             p.indentLeft();
