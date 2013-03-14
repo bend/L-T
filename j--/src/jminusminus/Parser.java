@@ -669,7 +669,6 @@ public class Parser {
                     System.out.println("###############################have ddot");
                 }
             } else {
-                // Empty declaration
                 System.out.println("###############################Empty decl");
                 init = statementExpressions();
                 mustBe(SEMI);
