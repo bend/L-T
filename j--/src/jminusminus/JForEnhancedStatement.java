@@ -54,7 +54,6 @@ class JForEnhancedStatement extends JStatement {
 
 
 		//INIT
-/*		
 		ArrayList<JVariableDeclarator> vars = new ArrayList<JVariableDeclarator>();
 
 		JVariable ourI = new JVariable(line,"i");
@@ -74,18 +73,18 @@ class JForEnhancedStatement extends JStatement {
 		JStatement incr = new JAssignOp(line,new JVariable(line,"i"),new JPlusOp(line,new JLiteralInt(line,"5"),new JLiteralInt(line,"1")));
 		
 
-		ArrayList<JStatement> statements = new ArrayList<JStatement>();
+		/*ArrayList<JStatement> statements = new ArrayList<JStatement>();
 		statements.add(incr);
 		statements.add(body);
 		JStatement ourBody = new JBlock(line,statements);
-
+        */
+		JStatement ourBody = new JBlock(line,body);
 
 		this.init = initFor;
 		this.condition = condFor;
-		this.body = ourBody;
+		//this.body = ourBody;
 
 
-*/
 
 	}
 
@@ -99,12 +98,10 @@ class JForEnhancedStatement extends JStatement {
 	 */
 
 	public JForEnhancedStatement analyze(Context context) {
-        /*
 		init.analyze(context);
 		condition.analyze(context);
 		body.analyze(context);
 		condition.type().mustMatchExpected(line(), Type.BOOLEAN);
-        */
 		return this;
 	}
 
@@ -131,11 +128,13 @@ class JForEnhancedStatement extends JStatement {
 		//		identifier.writeToStdOut(p);
 		//		p.indentLeft();
 		//		p.printf("</InitializeExpression>\n");
+        /*
 				p.printf("<Body>\n");
 				p.indentRight();
 				body.writeToStdOut(p);
 				p.indentLeft();
 				p.printf("</Body>\n");
+                */
 		//		p.indentLeft();
 		//		p.printf("</JForEnhancedStatement>\n");
 
